@@ -39,7 +39,15 @@ workflows:
       - name: Increment build number
         script: |
           cd $CM_BUILD_DIR/ios
-          agvtool new-version -all $(($(app-store-connect get-latest-testflight-build-number "$APP_STORE_APP_ID") + 1))
+          LATEST_BUILD_NUMBER=$(app-store-connect get-latest-testflight-build-number "$APP_STORE_APP_ID" 2>/dev/null || echo 0)
+          if [[ "$LATEST_BUILD_NUMBER" =~ ^[0-9]+$ ]]; then
+            NEW_BUILD_NUMBER=$((LATEST_BUILD_NUMBER + 1))
+            echo "Setting new build number: $NEW_BUILD_NUMBER"
+          else
+            echo "No previous build number found or invalid build number. Starting with build number 1."
+            NEW_BUILD_NUMBER=1
+          fi
+          agvtool new-version -all $NEW_BUILD_NUMBER || { echo "Failed to set new build number"; exit 1; }
       - name: Set up code signing settings in Xcode project
         script: xcode-project use-profiles --warn-only
       - name: Build IPA for distribution
