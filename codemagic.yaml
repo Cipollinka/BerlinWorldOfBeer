@@ -5,14 +5,14 @@ workflows:
     instance_type: mac_mini_m2
     environment:
       groups:
-        - app_store_credentials
+        - creds
       vars:
-        XCODE_WORKSPACE: "starburst.xcworkspace" # <----
-        XCODE_SCHEME: "starburst" # <----
-        BUNDLE_ID: "com.starstone.app" # <----
-        APP_STORE_APP_ID: 6738917148 # <----
-        APP_STORE_CONNECT_KEY_ID: "J3492K4NCM" # <----
-        APP_STORE_CONNECT_ISSUER_ID: "5828e985-34d6-48be-b1f6-4693128518cb" # <----
+        XCODE_WORKSPACE: "BerlinWorldOfBeer.xcworkspace" # <----
+        XCODE_SCHEME: "BerlinWorldOfBeer" # <----
+        BUNDLE_ID: "com.berlinworld.app" # <----
+        APP_STORE_APP_ID: 6739262617 # <----
+        APP_STORE_CONNECT_KEY_ID: "MR67AB24R8" # <----
+        APP_STORE_CONNECT_ISSUER_ID: "abfcf70c-15a3-4aa1-87d2-2f3d1d39409e" # <----
         node: latest
         xcode: latest
         cocoapods: default
@@ -52,7 +52,7 @@ workflows:
     publishing:
       email:
         recipients:
-          - andriajaparidzee@icloud.com       # <----
+          - bigbycoke@gmail.com       # <----
         notify:
           success: true
           failure: false
