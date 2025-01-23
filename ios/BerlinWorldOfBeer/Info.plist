@@ -5,7 +5,7 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>en</string>
 	<key>CFBundleDisplayName</key>
-	<string>BerlinWorldOfBeer</string>
+	<string>Berlin: Spielbank Beer Guide</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -27,12 +27,18 @@
 	<key>NSAppTransportSecurity</key>
 	<dict>
 		<key>NSAllowsArbitraryLoads</key>
-		<false/>
+		<true/>
 		<key>NSAllowsLocalNetworking</key>
 		<true/>
 	</dict>
-	<key>NSLocationWhenInUseUsageDescription</key>
-	<string></string>
+    <key>NSCameraUsageDescription</key>
+	<string>${PRODUCT_NAME} requires access to the camera to capture photos for user profiles and in-app activities.</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>${PRODUCT_NAME} requires microphone access to record audio for in-app video features.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>${PRODUCT_NAME} We need access to your photo library to select images or videos.</string>
+	<key>NSUserTrackingUsageDescription</key>
+	<string>${PRODUCT_NAME} uses tracking to provide personalized ads tailored to your interests.</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>Inter_18pt-Light.ttf</string>

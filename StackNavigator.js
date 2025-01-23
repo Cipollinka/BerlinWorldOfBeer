@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { ActivityIndicator, View, Platform } from 'react-native';
+import {ActivityIndicator, View, Platform, Image} from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { loadUserData } from './src/redux/userSlice';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
@@ -23,6 +23,7 @@ const AppStack = () => {
       <Provider store={store}>
         <UserProvider>
             <TailwindProvider utilities={utilities}>
+              <Image style={{position: 'absolute', width:'100%', height:'100%'}} source={require('./src/assets/images/bg.png')} />
               <SafeAreaProvider>
                 <AppNavigator />
               </SafeAreaProvider>
@@ -38,7 +39,7 @@ const AppNavigator = () => {
   const [initializing, setInitializing] = useState(true);
   const [onboardingVisible, setOnboardingVisible] = useState(false);
   const dispatch = useDispatch();
-  
+
   useEffect(() => {
     dispatch(loadUserData());
   }, [dispatch]);
