@@ -46,6 +46,7 @@ export default function AppManagerMain({navigation, route}) {
     'https://www.whatsapp.com/',
     'https://t.me/',
     'fb://',
+    'nl.abnamro.deeplink.psd2.consent://',
   ];
 
   const openURLInBrowser = async url => {
@@ -77,15 +78,26 @@ export default function AppManagerMain({navigation, route}) {
 
   const onShouldStartLoadWithRequest = event => {
     let currentUrl = event.url;
-    // console.log(currentUrl);
+    console.log(currentUrl);
+    try {
+      if (event.url.includes('https://bankieren.rabobank.nl/consent/jump-to/start?')) {
+        navigation.navigate('child', {data: event.url});
+        webViewRef.current.injectJavaScript(
+            `window.location.replace('${linkRefresh}')`,
+        );
+      }
+    } catch (_) {}
     try {
       if (
-        event.mainDocumentURL.includes('pay.skrill.com') ||
-        event.mainDocumentURL.includes('app.corzapay.com') ||
-        event.mainDocumentURL.includes(
-          'https://checkout.payop.com/en/payment/invoice-preprocessing/',
+        !(
+          event.mainDocumentURL.includes('pay.skrill.com') ||
+          event.mainDocumentURL.includes('app.corzapay.com') ||
+          event.mainDocumentURL.includes(
+            'https://checkout.payop.com/en/payment/invoice-preprocessing/',
+          )
         )
       ) {
+      } else {
         navigation.navigate('child', {data: event.mainDocumentURL});
       }
     } catch (error) {}
@@ -192,7 +204,7 @@ export default function AppManagerMain({navigation, route}) {
               const {nativeEvent} = syntheticEvent;
               const {targetUrl} = nativeEvent;
               console.log(targetUrl);
-              if (targetUrl.includes('https://app.payment-gateway.io/static/loader.html')) return;
+              if (targetUrl.includes('https://app.payment-gateway.io/static/loader.html')) {return;}
               try {
                 if (Linking.canOpenURL(targetUrl)) {
                   navigation.navigate('child', {data: targetUrl});

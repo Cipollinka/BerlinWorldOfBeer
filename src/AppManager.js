@@ -14,7 +14,7 @@ import Params from './Params';
 
 import AppManagerStack from './AppManagerStack';
 import LoaderRoot from './LoaderRoot';
-import AppStack from "../StackNavigator";
+import AppStack from '../StackNavigator';
 
 export default function AppManager() {
   const viewLoader = <LoaderRoot />;
@@ -234,13 +234,19 @@ export default function AppManager() {
       };
       const handleNotificationClick = event => {
         try {
-          if (event.notification.launchURL) {
-            EventManager.sendEvent(EventManager.eventList.browser);
-            Linking.openURL(event.notification.launchURL);
-          } else {
-            EventManager.sendEvent(EventManager.eventList.web_push);
-          }
-          openAppManagerView(false, true);
+          const getLink = async () => {
+            await Storage.get('link').then(res => {
+              dataLoad.current = res;
+              if (event.notification.launchURL) {
+                EventManager.sendEvent(EventManager.eventList.browser);
+                Linking.openURL(event.notification.launchURL);
+              } else {
+                EventManager.sendEvent(EventManager.eventList.web_push);
+              }
+              openAppManagerView(false, true);
+            });
+            getLink();
+          };
         } catch (error) {}
       };
       initialize();
