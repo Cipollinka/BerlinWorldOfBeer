@@ -238,6 +238,7 @@ export default function AppManager() {
       } catch (_) {}
     });
     setTimeout(() => {
+      EventManager.setParams(userID.current);
       if (pushOpen) {
         const getSavedLink = async () => {
           await Storage.get('link').then(res => {
@@ -253,7 +254,6 @@ export default function AppManager() {
         };
         getSavedLink();
       } else {
-        EventManager.setParams(userID.current);
         const init = async () => {
           try {
             deviceID.current = await Device.getUniqueId();
@@ -267,49 +267,6 @@ export default function AppManager() {
 
   useEffect(() => {
     initApp();
-    // OneSignal.initialize(Params.keyPush);
-    // getUserID();
-    // setTimeout(() => {
-    //   EventManager.setParams(Params.bodyLin, userID.current);
-    //   const initialize = async () => {
-    //     try {
-    //       deviceID.current = await Device.getUniqueId();
-    //       await getAdID();
-    //     } catch (error) {}
-    //   };
-    //   const handleNotificationClick = event => {
-    //     try {
-    //       const getLink = async () => {
-    //         await Storage.get('link').then((res) => {
-    //           console.log(res);
-    //         });
-    //         // await Storage.get('link').then(res => {
-    //         //   dataLoad.current = res + '&push=true';
-    //         //   if (event.notification.launchURL) {
-    //         //     EventManager.sendEvent(EventManager.eventList.browser);
-    //         //     Linking.openURL(event.notification.launchURL);
-    //         //   } else {
-    //         //     EventManager.sendEvent(EventManager.eventList.web_push);
-    //         //   }
-    //         //
-    //         //   openAppManagerView(false);
-    //         // });
-    //         getLink();
-    //       };
-    //     } catch (error) {}
-    //   };
-    //   initialize();
-    //   OneSignal.Notifications.addEventListener(
-    //     'click',
-    //     handleNotificationClick,
-    //   );
-    //   return () => {
-    //     OneSignal.Notifications.removeEventListener(
-    //       'click',
-    //       handleNotificationClick,
-    //     );
-    //   };
-    // }, 400);
   }, []);
 
   function appManagerStackView() {
