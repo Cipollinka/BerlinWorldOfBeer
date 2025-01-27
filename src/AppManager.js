@@ -150,6 +150,7 @@ export default function AppManager() {
   function openAppManagerView(isFirst) {
     if (isFirst && isPushAccess.current) {
       EventManager.sendEvent(EventManager.eventList.push);
+      dataLoad.current += '&push=true';
     }
     EventManager.sendEvent(EventManager.eventList.web);
     setGameOpen(false);
@@ -161,6 +162,9 @@ export default function AppManager() {
       return '';
     }
     const subList = subsRef.current.split('_');
+    if (subList.length === 1) {
+      return  '';
+    }
     const subParams = subList
       .map((sub, index) => `sub_id_${index + 1}=${sub}`)
       .join('&');
