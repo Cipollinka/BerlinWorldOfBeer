@@ -1,3 +1,4 @@
+import Params from './Params';
 export default class EventManager {
   static eventList = {
     firstOpen: 'uniq_visit',
@@ -7,16 +8,11 @@ export default class EventManager {
     browser: 'push_open_browser',
   };
 
-  constructor(bodyLink, userId) {
-    this.bodyLink = bodyLink;
-    this.userId = userId;
-  }
-
   bodyLink = '';
   userId = '';
 
-  static setParams(bodyLink, userID) {
-    this.bodyLink = bodyLink;
+  static setParams(userID) {
+    this.bodyLink = Params.bodyLin;
     this.userId = userID;
   }
 
