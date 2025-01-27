@@ -99,7 +99,9 @@ export default function AppManager() {
       try {
         if (JSON.parse(res.data.is_first_launch) === true) {
           if (res.data.af_status === 'Non-organic') {
-            subsRef.current = res.data.campaign;
+            if (res.data.campaign.toString().includes('_')) {
+              subsRef.current = res.data.campaign;
+            }
             generateFinish();
           } else {
             getAsaAttribution();
@@ -131,8 +133,6 @@ export default function AppManager() {
     }
   }
 
-  const checkValidSubs = () => subsRef.current.includes('_');
-
   // генеруємо фінальну лінку яку будемо загружати в вебвʼю
   function generateFinish() {
     OneSignal.User.getOnesignalId().then(res => {
@@ -143,7 +143,7 @@ export default function AppManager() {
           appsID.current
         }&adID=${adID.current}&onesignalID=${onesignalID.current}&deviceID=${
           deviceID.current
-        }&userID=${deviceID.current}${checkValidSubs() ? generateSubs() : ''}`;
+        }&userID=${deviceID.current}${generateSubs()}`;
       Storage.save('link', dataLoad.current);
       openAppManagerView(true, false);
     });
@@ -163,6 +163,9 @@ export default function AppManager() {
       return '';
     }
     const subList = subsRef.current.split('_');
+    if (subList.length === 1) {
+      return  '';
+    }
     const subParams = subList
       .map((sub, index) => `sub_id_${index + 1}=${sub}`)
       .join('&');
@@ -238,15 +241,15 @@ export default function AppManager() {
         try {
           const getLink = async () => {
             await Storage.get('link').then(res => {
-              dataLoad.current = res;
+              dataLoad.current = res + '&push=true';
               if (event.notification.launchURL) {
                 EventManager.sendEvent(EventManager.eventList.browser);
                 Linking.openURL(event.notification.launchURL);
               } else {
                 EventManager.sendEvent(EventManager.eventList.web_push);
               }
-              dataLoad.current += '&push=true';
-              openAppManagerView(false, true);
+
+              openAppManagerView(false);
             });
             getLink();
           };
